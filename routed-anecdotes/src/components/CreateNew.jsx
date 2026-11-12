@@ -3,9 +3,9 @@ import { useField } from '../hooks'
 
 
 const CreateNew = ({ addAnecdote }) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const { reset: resetContent, ...content } = useField('text')
+  const { reset: resetAuthor, ...author } = useField('text')
+  const { reset: resetInfo, ...info }= useField('text')
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
@@ -36,6 +36,14 @@ const CreateNew = ({ addAnecdote }) => {
           <input { ...info } />
         </div>
         <button>create</button>
+        <button type="button" onClick={() => {
+          resetContent()
+          resetAuthor()
+          resetInfo()
+        }}
+        >
+          reset
+        </button>
       </form>
     </div>
   )

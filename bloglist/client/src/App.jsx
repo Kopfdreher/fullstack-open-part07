@@ -9,6 +9,7 @@ import Notification from './components/Notification'
 import Menu from './components/Menu'
 import BlogList from './components/BlogList'
 import BlogView from './components/BlogView'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const App = () => {
   const navigate = useNavigate()
@@ -116,23 +117,25 @@ const App = () => {
     <div>
       <Notification message={errorMessage} />
       <Menu user={user} handleLogout={handleLogout} />
-      <Container sx={{ paddingTop: 2, paddingBottom: 4 }}>
-        <Routes>
-          <Route path='/' element={<BlogList blogs={blogs} />} />
-          <Route path='/login' element={
-            <LoginForm user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
-          } />
-          <Route path='/create' element={<BlogForm addBlog={addBlog} />} />
-          <Route path='/blogs/:id' element={
-            <BlogView
-              blogs={blogs}
-              addLike={addLike}
-              removeBlog={removeBlog}
-              user={user}
-            />
-          } />
-        </Routes>
-      </Container>
+      <ErrorBoundary>
+        <Container sx={{ paddingTop: 2, paddingBottom: 4 }}>
+          <Routes>
+            <Route path='/' element={<BlogList blogs={blogs} />} />
+            <Route path='/login' element={
+              <LoginForm user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
+            } />
+            <Route path='/create' element={<BlogForm addBlog={addBlog} />} />
+            <Route path='/blogs/:id' element={
+              <BlogView
+                blogs={blogs}
+                addLike={addLike}
+                removeBlog={removeBlog}
+                user={user}
+              />
+            } />
+          </Routes>
+        </Container>
+      </ErrorBoundary>
     </div>
   )
 }

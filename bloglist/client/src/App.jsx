@@ -10,6 +10,7 @@ import Menu from './components/Menu'
 import BlogList from './components/BlogList'
 import BlogView from './components/BlogView'
 import ErrorBoundary from './components/ErrorBoundary'
+import { useNotify } from './hooks'
 
 const App = () => {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ const App = () => {
     const UserJSON = window.localStorage.getItem('loggedBlogListUser')
     return UserJSON ? JSON.parse(UserJSON) : null
   })
-  const [errorMessage, setErrorMessage] = useState(null)
+  const { notify } = useNotify()
 
   useEffect(() => {
     (async () => {
@@ -28,7 +29,7 @@ const App = () => {
           setBlogs(fetchedBlogs.sort((a, b) => b.likes - a.likes))
       } catch (error) {
         console.error('Failed to fetch blogs:', error)
-        setErrorMessage(error)
+        notify(error)
       }
     })()
   }, [])
@@ -47,10 +48,7 @@ const App = () => {
       navigate('/')
       return true
     } catch {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      notify('wrong credentials')
       return false
     }
   }
@@ -75,10 +73,7 @@ const App = () => {
       }
       return true
     } catch {
-      setErrorMessage('adding like failed')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      notify('adding like failed')
       return false
     }
   }
@@ -90,10 +85,7 @@ const App = () => {
       navigate('/')
       return true
     } catch {
-      setErrorMessage('creating blog failed')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      notify('creating blog failed')
       return false
     }
   }
@@ -105,17 +97,14 @@ const App = () => {
       navigate('/')
       return true
     } catch {
-      setErrorMessage('deleting blog failed')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      notify('deleting blog failed')
       return false
     }
   }
 
   return (
     <div>
-      <Notification message={errorMessage} />
+      <Notification />
       <Menu user={user} handleLogout={handleLogout} />
       <ErrorBoundary>
         <Container sx={{ paddingTop: 2, paddingBottom: 4 }}>

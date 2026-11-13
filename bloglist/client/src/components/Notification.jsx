@@ -1,12 +1,18 @@
+import { useNotify } from '../hooks'
 import Alert from '@mui/material/Alert'
 
-const Notification = ({ message }) => {
-  if (message === null) return null
+const Notification = () => {
+  const { message } = useNotify()
+  if (message.length === 0) return null
 
   return (
-    <Alert severity='error' sx={{ margin: 1 }}>
-      {message}
-    </Alert>
+    <>
+      {message.map(message => (
+        <Alert key={message.id} severity='error' sx={{ margin: 1 }}>
+          {message.text}
+        </Alert>
+      ))}
+    </>
   )
 }
 

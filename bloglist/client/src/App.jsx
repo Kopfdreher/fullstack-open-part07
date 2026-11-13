@@ -133,6 +133,7 @@ const App = () => {
                 user={user}
               />
             } />
+            <Route path='*' element={<h2>404 – Page not found</h2>} />
           </Routes>
         </Container>
       </ErrorBoundary>

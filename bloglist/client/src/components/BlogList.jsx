@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom'
+import { useBlogs } from '../hooks'
 
-const BlogList = ({ blogs }) => {
+const BlogList = () => {
+  const { blogs, isPending, isError } = useBlogs()
+
+  if (isPending) return <div>loading data...</div>
+  if (isError) {
+    return <div>blogs not available due to problems on the server</div>
+  }
+
   return (
     <div>
       <h2>blogs</h2>

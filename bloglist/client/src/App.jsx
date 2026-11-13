@@ -10,29 +10,17 @@ import Menu from './components/Menu'
 import BlogList from './components/BlogList'
 import BlogView from './components/BlogView'
 import ErrorBoundary from './components/ErrorBoundary'
-import { useNotify } from './hooks'
+import { useNotify, useBlogs } from './hooks'
 
 const App = () => {
+  const { blogs, addBlog } = useBlogs()
   const navigate = useNavigate()
-  const [blogs, setBlogs] = useState([])
+  const [vlogs, setBlogs] = useState([])
   const [user, setUser] = useState(() => {
     const UserJSON = window.localStorage.getItem('loggedBlogListUser')
     return UserJSON ? JSON.parse(UserJSON) : null
   })
   const { notify } = useNotify()
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const fetchedBlogs = await blogService.getAll()
-        if (fetchedBlogs)
-          setBlogs(fetchedBlogs.sort((a, b) => b.likes - a.likes))
-      } catch (error) {
-        console.error('Failed to fetch blogs:', error)
-        notify(error)
-      }
-    })()
-  }, [])
 
   useEffect(() => {
     blogService.setToken(user ? user.token : null)
@@ -78,18 +66,6 @@ const App = () => {
     }
   }
 
-  const addBlog = async (blogObject) => {
-    try {
-      const returnedBlog = await blogService.create(blogObject)
-      if (returnedBlog) setBlogs(blogs.concat(returnedBlog))
-      navigate('/')
-      return true
-    } catch {
-      notify('creating blog failed')
-      return false
-    }
-  }
-
   const removeBlog = async (id) => {
     try {
       await blogService.remove(id)
@@ -109,7 +85,7 @@ const App = () => {
       <ErrorBoundary>
         <Container sx={{ paddingTop: 2, paddingBottom: 4 }}>
           <Routes>
-            <Route path='/' element={<BlogList blogs={blogs} />} />
+            <Route path='/' element={<BlogList />} />
             <Route path='/login' element={
               <LoginForm user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
             } />

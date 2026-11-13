@@ -13,9 +13,12 @@ export const useBlogs = () => {
 
   const result = useQuery({
     queryKey: ['blogs'],
-    queryFn: blogService.getAll,
+    queryFn: async () => {
+      const fetchedBlogs = await blogService.getAll()
+      return fetchedBlogs.sort((a, b) => b.likes - a.likes)
+    },
     refetchOnWindowFocus: false,
-    retry: false
+    retry: false,
   })
 
   const newBlogMutation = useMutation({
@@ -28,11 +31,39 @@ export const useBlogs = () => {
     }
   })
 
+  const updateBlogMutation = useMutation({
+    mutationFn: blogService.update,
+    onSuccess: (updatedBlog) => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(['blogs'], blogs
+        .map(b => b.id === updatedBlog.id
+          ? updatedBlog
+          : b
+        )
+        .sort((a, b) => b.likes - a.likes)
+      )
+      notify(`blog '${updatedBlog.title}' liked`)
+    }
+  })
+
+  const removeBlogMutation = useMutation({
+    mutationFn: blogService.remove,
+    onSuccess: (id) => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(['blogs'], blogs
+        .filter((blog) => blog.id !== id))
+      navigate('/')
+    }
+  })
+
   return {
     blogs: result.data,
     isPending: result.isPending,
     isError: result.isError,
     error: result.error,
     addBlog: (object) => newBlogMutation.mutate(object),
+    addLike: (blog) => updateBlogMutation
+      .mutate({ ...blog, likes: blog.likes + 1 }),
+    removeBlog: (id) => removeBlogMutation.mutate(id),
   }
 }

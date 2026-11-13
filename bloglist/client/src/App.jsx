@@ -13,9 +13,8 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { useNotify, useBlogs } from './hooks'
 
 const App = () => {
-  const { blogs, addBlog } = useBlogs()
+  const { blogs, addBlog, addLike, removeBlog } = useBlogs()
   const navigate = useNavigate()
-  const [vlogs, setBlogs] = useState([])
   const [user, setUser] = useState(() => {
     const UserJSON = window.localStorage.getItem('loggedBlogListUser')
     return UserJSON ? JSON.parse(UserJSON) : null
@@ -49,35 +48,6 @@ const App = () => {
     navigate('/')
   }
 
-  const addLike = async (blogObject) => {
-    try {
-      const updatedBlog = await blogService.update(blogObject)
-      if (updatedBlog) {
-        setBlogs(
-          blogs
-            .map((blog) => (blog.id === blogObject.id ? updatedBlog : blog))
-            .sort((a, b) => b.likes - a.likes),
-        )
-      }
-      return true
-    } catch {
-      notify('adding like failed')
-      return false
-    }
-  }
-
-  const removeBlog = async (id) => {
-    try {
-      await blogService.remove(id)
-      setBlogs(blogs.filter((blog) => blog.id !== id))
-      navigate('/')
-      return true
-    } catch {
-      notify('deleting blog failed')
-      return false
-    }
-  }
-
   return (
     <div>
       <Notification />
@@ -90,14 +60,7 @@ const App = () => {
               <LoginForm user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
             } />
             <Route path='/create' element={<BlogForm addBlog={addBlog} />} />
-            <Route path='/blogs/:id' element={
-              <BlogView
-                blogs={blogs}
-                addLike={addLike}
-                removeBlog={removeBlog}
-                user={user}
-              />
-            } />
+            <Route path='/blogs/:id' element={<BlogView user={user}/>} />
             <Route path='*' element={<h2>404 – Page not found</h2>} />
           </Routes>
         </Container>

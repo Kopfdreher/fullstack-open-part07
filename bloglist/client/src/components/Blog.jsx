@@ -7,10 +7,7 @@ import Link from '@mui/material/Link'
 const Blog = ({ blog, addLike, removeBlog, user }) => {
   const onLike = async (event) => {
     event.preventDefault()
-    await addLike({
-      ...blog,
-      likes: blog.likes + 1
-    })
+    await addLike(blog)
   }
 
   const onRemove = async (event) => {

@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import Container from '@mui/material/Container'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
-import { Routes, Route, Link, useNavigate, useMatch } from 'react-router-dom'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Button from '@mui/material/Button'
-import Container from '@mui/material/Container'
+import Menu from './components/Menu'
+import BlogList from './components/BlogList'
+import BlogView from './components/BlogView'
 
 const App = () => {
   const navigate = useNavigate()
@@ -113,70 +112,24 @@ const App = () => {
     }
   }
 
-  const blogSection = () => (
-    <div>
-      <h2>blogs</h2>
-      <ul>
-        {blogs.map((blog) => (
-          <li key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-
-  const match = useMatch('/blogs/:id')
-
-  const blog = match
-    ? blogs.find((b) => b.id === match.params.id)
-    : null
-
   return (
     <div>
       <Notification message={errorMessage} />
-      <AppBar position='static'>
-        <Toolbar>
-          <Button color='inherit' component={Link} to='/'>
-            blogs
-          </Button>
-          {user && (
-            <Button color='inherit' component={Link} to='/create'>
-              new blog
-            </Button>
-          )}
-          {user && (
-            <Button color='inherit' onClick={handleLogout}>
-              logout
-            </Button>
-          )}
-          {!user && (
-            <Button color='inherit' component={Link} to='/login'>
-              login
-            </Button>
-          )}
-        </Toolbar>
-      </AppBar>
+      <Menu user={user} handleLogout={handleLogout} />
       <Container sx={{ paddingTop: 2, paddingBottom: 4 }}>
         <Routes>
-          <Route path='/' element={
-            blogSection()
-          } />
+          <Route path='/' element={<BlogList blogs={blogs} />} />
           <Route path='/login' element={
-            <LoginForm user={user} handleLogin={handleLogin} handleLogout={handleLogout}/>
+            <LoginForm user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
           } />
-          <Route path='/create' element={
-            <BlogForm addBlog={addBlog} />
-          } />
+          <Route path='/create' element={<BlogForm addBlog={addBlog} />} />
           <Route path='/blogs/:id' element={
-            blog
-              ? <Blog
-                blog={blog}
-                addLike={addLike}
-                removeBlog={removeBlog}
-                user={user}
-              />
-              : <p>blog not found</p>
+            <BlogView
+              blogs={blogs}
+              addLike={addLike}
+              removeBlog={removeBlog}
+              user={user}
+            />
           } />
         </Routes>
       </Container>

@@ -7,11 +7,11 @@ const Notification = () => {
 
   return (
     <>
-      {message.map(message => {
-        <Alert key={message.id} severity='error' sx={{ margin: 1 }}>
+      {message.map(message => (
+        <Alert key={message.id} severity={message.type} sx={{ margin: 1 }}>
           {message.text}
         </Alert>
-      })}
+      ))}
     </>
   )
 }

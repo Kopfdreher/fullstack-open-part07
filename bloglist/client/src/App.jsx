@@ -35,7 +35,7 @@ const App = () => {
       navigate('/')
       return true
     } catch {
-      notify('wrong credentials')
+      notify('wrong credentials', 'error')
       return false
     }
   }

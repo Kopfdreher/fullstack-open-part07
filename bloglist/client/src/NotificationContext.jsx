@@ -18,9 +18,9 @@ const notificationReducer = (state, action) => {
 export const NotificationContextProvider = (props) => {
   const [message, dispatch] = useReducer(notificationReducer, [])
 
-  const notify = (text) => {
+  const notify = (text, type = 'info' ) => {
     const id = crypto.randomUUID()
-    dispatch({ type: 'ADD', payload:{ id, text } })
+    dispatch({ type: 'ADD', payload:{ id, text, type } })
     setTimeout(() => dispatch({ type: 'REMOVE', payload: id }), 5000)
   }
 

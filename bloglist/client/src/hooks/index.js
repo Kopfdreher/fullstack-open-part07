@@ -51,6 +51,17 @@ export const useBlogs = () => {
     }
   })
 
+  const commentMutation = useMutation({
+    mutationFn: ({ id, comment }) => blogService.addComment(id, comment),
+    onSuccess: (updatedBlog) => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(['blogs'], blogs.map(b =>
+        b.id === updatedBlog.id ? updatedBlog : b
+      ))
+      notify(`comment added to '${updatedBlog.title}'`)
+    }
+  })
+
   const removeBlogMutation = useMutation({
     mutationFn: blogService.remove,
     onSuccess: (id) => {
@@ -70,6 +81,7 @@ export const useBlogs = () => {
     addLike: (blog) => updateBlogMutation
       .mutate({ ...blog, likes: blog.likes + 1 }),
     removeBlog: (id) => removeBlogMutation.mutate(id),
+    addComment: (id, comment) => commentMutation.mutate({ id, comment }),
   }
 }
 

@@ -3,7 +3,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import { useNavigate } from 'react-router-dom'
 import { useNotify } from './hooks'
-import { getUser, saveUser, removeUser } from './services/user'
+import { getUser, saveUser, removeUser } from './services/persistentUser'
 
 const UserContext = createContext()
 

@@ -3,6 +3,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import { useNavigate } from 'react-router-dom'
 import { useNotify } from './hooks'
+import { getUser, saveUser, removeUser } from './services/user'
 
 const UserContext = createContext()
 
@@ -11,10 +12,7 @@ export default UserContext
 export const UserContextProvider = (props) => {
   const { notify } = useNotify()
   const navigate = useNavigate()
-  const [user, setUser] = useState(() => {
-    const UserJSON = window.localStorage.getItem('loggedBlogListUser')
-    return UserJSON ? JSON.parse(UserJSON) : null
-  })
+  const [user, setUser] = useState(() => getUser())
 
   useEffect(() => {
     blogService.setToken(user ? user.token : null)
@@ -24,7 +22,7 @@ export const UserContextProvider = (props) => {
     try {
       const user = await loginService.login(loginObject)
 
-      window.localStorage.setItem('loggedBlogListUser', JSON.stringify(user))
+      saveUser(user)
       blogService.setToken(user.token)
       setUser(user)
       navigate('/')
@@ -37,7 +35,7 @@ export const UserContextProvider = (props) => {
 
   const handleLogout = async (event) => {
     event.preventDefault()
-    window.localStorage.removeItem('loggedBlogListUser')
+    removeUser()
     setUser(null)
     blogService.setToken(null)
     navigate('/')

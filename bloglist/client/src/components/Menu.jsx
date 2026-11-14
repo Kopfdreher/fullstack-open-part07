@@ -13,7 +13,7 @@ const Menu = () => {
         blogs
         </Button>
         <Button color='inherit' component={Link} to='/users'>
-        Users
+        users
         </Button>
         {user && (
           <Button color='inherit' component={Link} to='/create'>

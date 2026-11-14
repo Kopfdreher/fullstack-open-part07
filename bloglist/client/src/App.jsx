@@ -6,6 +6,7 @@ import Notification from './components/Notification'
 import Menu from './components/Menu'
 import BlogList from './components/BlogList'
 import BlogView from './components/BlogView'
+import UserList from './components/UserList'
 import ErrorBoundary from './components/ErrorBoundary'
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<BlogList />} />
             <Route path='/login' element={ <LoginForm />} />
+            <Route path='/users' element={ <UserList />} />
             <Route path='/create' element={<BlogForm />} />
             <Route path='/blogs/:id' element={<BlogView />} />
             <Route path='*' element={<h2>404 – Page not found</h2>} />

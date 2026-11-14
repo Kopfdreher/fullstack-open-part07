@@ -12,6 +12,9 @@ const Menu = () => {
         <Button color='inherit' component={Link} to='/'>
         blogs
         </Button>
+        <Button color='inherit' component={Link} to='/users'>
+        Users
+        </Button>
         {user && (
           <Button color='inherit' component={Link} to='/create'>
           new blog

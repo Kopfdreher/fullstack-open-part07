@@ -1,9 +1,11 @@
 import { useContext } from 'react'
-import NotificationContext from '../NotificationContext'
-import UserContext from '../UserContext'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
+import userService from '../services/users'
 import { useNavigate } from 'react-router-dom'
+
+import NotificationContext from '../NotificationContext'
+import UserContext from '../UserContext'
 
 export const useNotify = () => useContext(NotificationContext)
 
@@ -68,5 +70,25 @@ export const useBlogs = () => {
     addLike: (blog) => updateBlogMutation
       .mutate({ ...blog, likes: blog.likes + 1 }),
     removeBlog: (id) => removeBlogMutation.mutate(id),
+  }
+}
+
+export const useUsers = () => {
+
+  const result = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const fetchedUsers = await userService.getAll()
+      return fetchedUsers
+    },
+    refetchOnWindowFocus: false,
+    retry: false,
+  })
+
+  return {
+    users: result.data,
+    isPending: result.isPending,
+    isError: result.isError,
+    error: result.error,
   }
 }

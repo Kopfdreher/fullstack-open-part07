@@ -1,10 +1,13 @@
 import { useContext } from 'react'
 import NotificationContext from '../NotificationContext'
+import UserContext from '../UserContext'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
 import { useNavigate } from 'react-router-dom'
 
 export const useNotify = () => useContext(NotificationContext)
+
+export const useUser = () => useContext(UserContext)
 
 export const useBlogs = () => {
   const queryClient = useQueryClient()

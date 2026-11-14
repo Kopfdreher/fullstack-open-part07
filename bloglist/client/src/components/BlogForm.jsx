@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import { useBlogs } from '../hooks'
 
-const BlogForm = ({ addBlog }) => {
+const BlogForm = () => {
+  const { addBlog } = useBlogs()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')

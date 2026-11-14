@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom'
 import Blog from './Blog'
-import { useBlogs } from '../hooks'
+import { useBlogs, useUser } from '../hooks'
 
-const BlogView = ({ user }) => {
+const BlogView = () => {
+  const { user } = useUser()
   const { blogs, addLike, removeBlog } = useBlogs()
   const { id } = useParams()
   if (!blogs) return <p>blog not found</p>

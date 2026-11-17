@@ -2,14 +2,18 @@
 
 Solutions for [Full Stack Open, part 7](https://fullstackopen.com/en/part7).
 
-Parts 0–5 are in [fullstack-open-part00-05](https://github.com/Kopfdreher/fullstack-open-part00-05), which also describes the course. Part 6 is in [fullstack-open-part06](https://github.com/Kopfdreher/fullstack-open-part06).
+Parts 0–5: [fullstack-open-part00-05](https://github.com/Kopfdreher/fullstack-open-part00-05). Part 6: [fullstack-open-part06](https://github.com/Kopfdreher/fullstack-open-part06).
 
-This part covers several topics. It starts with custom hook functions, then looks at how bundling works in React applications: [esbuild](https://esbuild.github.io/) as a low-level bundler, and how [Vite](https://vite.dev/) can be configured for different scenarios. Toward the end it covers class components and other React topics such as code organization and error boundaries, and recaps the course so far by extending the Blog application with new features.
+Custom hooks, bundling with [esbuild](https://esbuild.github.io/) and [Vite](https://vite.dev/), class components, and an extended Blog app.
 
 | Directory | What it covers |
 | --- | --- |
 | `routed-anecdotes` | Anecdotes with React Router and custom hooks |
-| `bloglist` | Blog application extended with the part 7 features |
-| `bloglist-tests` | Playwright tests for those bloglist features |
+| `bloglist` | Blog app with the part 7 features |
+| `bloglist-tests` | Playwright tests for bloglist |
 
-Each app is started from its own directory with `npm install` and `npm run dev`. `routed-anecdotes` also needs json-server (`npm run server`). The bloglist tests expect a client and server under `bloglist/` and a `TEST_MONGODB_URI`; see `bloglist-tests/README.md`.
+From each app directory: `npm install` and `npm run dev`. `routed-anecdotes` also needs `npm run server`. Bloglist tests need a client and server under `bloglist/` and `TEST_MONGODB_URI` (see `bloglist-tests/README.md`).
+
+## Certificate
+
+![Part 7 certificate](certificate-part07.png)
